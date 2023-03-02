@@ -35,7 +35,7 @@ resource "google_cloud_run_service" "run_service" {
 resource "google_cloud_run_service_iam_policy" "public_access" {
   service     = google_cloud_run_service.run_service.name
   location    = google_cloud_run_service.run_service.location
-  policy_data = google_iam_policy.pub-1
+  policy_data = google_iam_policy.pub-1.policy_data
 }
 
 data "google_iam_policy" "pub-1" {
