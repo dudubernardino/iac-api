@@ -19,6 +19,7 @@ module "cloud_run_service" {
   source            = "./cloud_run"
   projectId         = var.projectId
   docker_image_name = var.docker_image_name
+  container_port    = 3000
   region            = var.region
 }
 

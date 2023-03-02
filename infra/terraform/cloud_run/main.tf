@@ -14,6 +14,10 @@ resource "google_cloud_run_service" "run_service" {
     spec {
       containers {
         image = var.docker_image_name
+
+        ports {
+          container_port = var.container_port
+        }
       }
     }
   }
