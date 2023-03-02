@@ -31,16 +31,19 @@ resource "google_cloud_run_service" "run_service" {
   depends_on = [google_project_service.run_api]
 }
 
-# Allow unauthenticated users to invoke the service
-resource "google_cloud_run_service_iam_policy" "public_access" {
-  service     = google_cloud_run_service.run_service.name
-  location    = google_cloud_run_service.run_service.location
-  policy_data = google_iam_policy.pub-1.policy_data
-}
-
 data "google_iam_policy" "pub-1" {
   binding {
     role    = "roles/run.invoker"
     members = ["allUsers"]
   }
 }
+
+# Allow unauthenticated users to invoke the service
+resource "google_cloud_run_service_iam_policy" "public_access" {
+  project     = google_cloud_run_service.run_service.project
+  service     = google_cloud_run_service.run_service.name
+  location    = google_cloud_run_service.run_service.location
+  policy_data = google_iam_policy.pub-1.policy_data
+}
+
+
