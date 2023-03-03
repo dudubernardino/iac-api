@@ -13,3 +13,8 @@ docker push dudubernardino/iac-api:latest
 gcloud init
 
 gcloud auth application-default login
+
+---------------------------------------------
+
+ativar API e Serviços
+ativar IAM 
