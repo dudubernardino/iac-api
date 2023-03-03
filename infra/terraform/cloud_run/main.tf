@@ -7,8 +7,9 @@ resource "google_project_service" "run_api" {
 
 # Create the Cloud Run service
 resource "google_cloud_run_service" "run_service" {
-  name     = var.projectId
+  name     = var.service_application_name
   location = var.region
+  project  = var.project_id
 
   template {
     spec {
@@ -33,11 +34,11 @@ resource "google_cloud_run_service" "run_service" {
 
 # Allow unauthenticated users to invoke the service
 resource "google_cloud_run_service_iam_binding" "public_access" {
-  project     = google_cloud_run_service.run_service.project
-  service     = google_cloud_run_service.run_service.name
-  location    = google_cloud_run_service.run_service.location
-  role    = "roles/run.invoker"
-  members = ["allUsers"]
+  project  = google_cloud_run_service.run_service.project
+  service  = google_cloud_run_service.run_service.name
+  location = google_cloud_run_service.run_service.location
+  role     = "roles/run.invoker"
+  members  = ["allUsers"]
 
   # Waits for the Cloud Run API to be enabled
   depends_on = [google_cloud_run_service.run_service]

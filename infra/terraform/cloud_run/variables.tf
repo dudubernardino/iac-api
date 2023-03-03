@@ -1,4 +1,4 @@
-variable "projectId" {
+variable "project_id" {
   type = string
 }
 
@@ -7,6 +7,10 @@ variable "docker_image_name" {
 }
 
 variable "container_port" {
+  type = string
+}
+
+variable "service_application_name" {
   type = string
 }
 
