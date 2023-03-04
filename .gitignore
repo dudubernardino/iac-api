@@ -41,6 +41,6 @@ lerna-debug.log*
 .terraform
 .terraform.lock.hcl
 .env copy
-credentials.json
+/infra/terraform/credentials.json
 
 
