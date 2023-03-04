@@ -19,6 +19,20 @@ resource "google_cloud_run_service" "run_service" {
         ports {
           container_port = var.container_port
         }
+
+        dynamic "env" {
+          for_each = tomap({
+            "POSTGRES_HOST" = var.postgres_host
+            "POSTGRES_PORT" : "5432"
+            "POSTGRES_USER"     = "admin"
+            "POSTGRES_PASSWORD" = "admin"
+            "POSTGRES_DB"       = "${var.project_id}-db"
+          })
+          content {
+            name  = env.key
+            value = env.value
+          }
+        }
       }
     }
   }
@@ -30,18 +44,6 @@ resource "google_cloud_run_service" "run_service" {
 
   # Waits for the Cloud Run API to be enabled
   depends_on = [google_project_service.run_api]
-}
-
-# Allow unauthenticated users to invoke the service
-resource "google_cloud_run_service_iam_binding" "public_access" {
-  project  = google_cloud_run_service.run_service.project
-  service  = google_cloud_run_service.run_service.name
-  location = google_cloud_run_service.run_service.location
-  role     = "roles/run.invoker"
-  members  = ["allUsers"]
-
-  # Waits for the Cloud Run API to be enabled
-  depends_on = [google_cloud_run_service.run_service]
 }
 
 

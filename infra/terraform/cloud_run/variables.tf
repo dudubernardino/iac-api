@@ -14,6 +14,10 @@ variable "service_application_name" {
   type = string
 }
 
+variable "postgres_host" {
+  type = string
+}
+
 variable "region" {
   type    = string
   default = "us-central1"
