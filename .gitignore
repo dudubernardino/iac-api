@@ -36,6 +36,8 @@ lerna-debug.log*
 .env
 
 # terraform
+*.tfstate
+*.tfstate.*
 .terraform
 .terraform.lock.hcl
 .env copy
