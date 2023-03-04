@@ -1,10 +1,3 @@
-# Enables the Cloud Run API
-resource "google_project_service" "run_api" {
-  service = "run.googleapis.com"
-
-  disable_on_destroy = true
-}
-
 # Create the Cloud Run service
 resource "google_cloud_run_service" "run_service" {
   name     = var.service_application_name
@@ -13,6 +6,7 @@ resource "google_cloud_run_service" "run_service" {
 
   template {
     spec {
+      service_account_name = google_service_account.cloud_run_service_account.email
       containers {
         image = var.docker_image_name
 
@@ -41,9 +35,20 @@ resource "google_cloud_run_service" "run_service" {
     percent         = 100
     latest_revision = true
   }
+}
 
-  # Waits for the Cloud Run API to be enabled
-  depends_on = [google_project_service.run_api]
+data "google_iam_policy" "iam_policy" {
+  binding {
+    role    = "roles/run.invoker"
+    members = ["allUsers"]
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "iam_policy" {
+  location = google_cloud_run_service.run_service.location
+  service  = google_cloud_run_service.run_service.name
+
+  policy_data = data.google_iam_policy.iam_policy.policy_data
 }
 
 

@@ -39,6 +39,17 @@ module "project_ops_iac_api" {
     "artifactregistry.googleapis.com",
     "container.googleapis.com"
   ]
+
+
+}
+
+module "service_accounts" {
+  source     = "./service_accounts"
+  project_id = var.project_id
+
+  depends_on = [
+    module.project_ops_iac_api
+  ]
 }
 
 module "postgres" {
@@ -47,6 +58,10 @@ module "postgres" {
   region              = var.region
   zone                = var.zone
   deletion_protection = false
+
+  depends_on = [
+    module.service_accounts
+  ]
 }
 
 module "cloud_run_service" {
@@ -57,6 +72,10 @@ module "cloud_run_service" {
   container_port           = 3000
   region                   = var.region
   postgres_host            = module.postgres.postgres_internal_ip
+
+  depends_on = [
+    module.postgres
+  ]
 }
 
 
