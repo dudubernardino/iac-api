@@ -12,7 +12,11 @@ module "postgresql" {
   project_id           = var.project_id
   database_version     = "POSTGRES_14"
   region               = var.region
-  zone                 = var.zone
+
+  // Master configurations
+  tier = "db-f1-micro"
+  zone = var.zone
+
 
   deletion_protection = var.deletion_protection
 
