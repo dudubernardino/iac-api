@@ -17,6 +17,14 @@ module "postgresql" {
   tier = "db-f1-micro"
   zone = var.zone
 
+  ip_configuration = {
+    ipv4_enabled       = false
+    require_ssl        = false
+    private_network    = module.vpc_module.network_self_link
+    allocated_ip_range = google_compute_global_address.private_ip_address.name
+    authorized_networks = [
+    ]
+  }
 
   deletion_protection = var.deletion_protection
 
@@ -31,6 +39,10 @@ module "postgresql" {
 
   user_name     = local.db_username
   user_password = local.db_password
+
+  depends_on = [
+    google_service_networking_connection.private_vpc_connection
+  ]
 
   create_timeout = "30m"
 }

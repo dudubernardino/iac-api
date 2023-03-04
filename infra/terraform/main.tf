@@ -28,19 +28,17 @@ module "project_ops_iac_api" {
 
   activate_apis = [
     "iam.googleapis.com",
-    "iap.googleapis.com",
+    "run.googleapis.com",
     "admin.googleapis.com",
     "cloudresourcemanager.googleapis.com",
-    "run.googleapis.com",
+    "vpcaccess.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "servicecontrol.googleapis.com",
+    "servicemanagement.googleapis.com",
     "sql-component.googleapis.com",
     "sqladmin.googleapis.com",
-    "secretmanager.googleapis.com",
-    "storage.googleapis.com",
-    "artifactregistry.googleapis.com",
     "container.googleapis.com"
   ]
-
-
 }
 
 module "service_accounts" {
@@ -72,6 +70,7 @@ module "cloud_run_service" {
   container_port           = 3000
   region                   = var.region
   postgres_host            = module.postgres.postgres_internal_ip
+  vpc_access_connector     = module.postgres.vpc_access_connector
 
   depends_on = [
     module.postgres

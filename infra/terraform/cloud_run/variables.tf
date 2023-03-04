@@ -18,6 +18,10 @@ variable "postgres_host" {
   type = string
 }
 
+variable "vpc_access_connector" {
+  type = string
+}
+
 variable "region" {
   type    = string
   default = "us-central1"

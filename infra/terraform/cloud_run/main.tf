@@ -29,6 +29,13 @@ resource "google_cloud_run_service" "run_service" {
         }
       }
     }
+
+    metadata {
+      annotations = tomap({
+        "run.googleapis.com/vpc-access-connector" = var.vpc_access_connector,
+        "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+      })
+    }
   }
 
   traffic {
