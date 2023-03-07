@@ -7,6 +7,11 @@ import { UsersService } from './users.service'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  welcome(): string {
+    return 'Welcome to Users API'
+  }
+
   @Post()
   async create(@Body() data: UserInputDto): Promise<UserEntity> {
     const result = await this.usersService.create(data)
